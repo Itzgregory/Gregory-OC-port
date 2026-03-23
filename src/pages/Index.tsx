@@ -12,6 +12,12 @@ import { InfiniteMovingCards } from "@/components/InfiniteMovingCards";
 import { ScrollReveal, StaggerReveal } from "@/components/ScrollReveal";
 import { HoverBorderGradient } from "@/components/HoverBorderGradient";
 import { useCharacterScramble } from "@/hooks/useCharacterScramble";
+import { WorkSection } from "@/components/WorkLayouts";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 /* ── Data ─────────────────────────────────────────────────────── */
 
