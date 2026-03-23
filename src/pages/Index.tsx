@@ -148,6 +148,16 @@ function WorkRow({ project }: { project: Project }) {
           <p className="mt-4 font-mono text-sm text-ink-muted">
             {project.stack.join(", ")}
           </p>
+          {project.previewAvailable && project.url && (
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-4 font-mono text-sm text-accent hover:text-accent-dark hover:underline transition-colors duration-base ease-editorial"
+            >
+              View Project →
+            </a>
+          )}
         </div>
       </div>
     </div>
