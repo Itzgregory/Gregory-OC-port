@@ -562,7 +562,7 @@ export default function Index() {
       <main className="mx-auto max-w-[820px] px-8">
         <HeroSection />
         <AboutSection />
-        <WorkSection />
+        <WorkSection projects={PROJECTS} />
         <StackSection />
       </main>
 
