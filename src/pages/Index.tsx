@@ -183,22 +183,33 @@ function WorkRow({ project }: { project: Project }) {
             transition={{ duration: 0.5, ease: EASE }}
             className="overflow-hidden"
           >
-            <div className="px-2 pb-8 pt-2">
-              <p className="font-body text-base leading-relaxed text-ink-primary max-w-lg">
-                {project.description}
-              </p>
-              <p className="mt-4 font-mono text-sm text-ink-muted">
-                {project.stack.join(", ")}
-              </p>
-              {project.previewAvailable && project.url && (
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block mt-4 font-mono text-sm text-accent hover:text-accent-dark hover:underline transition-colors duration-base ease-editorial"
-                >
-                  View Project →
-                </a>
+            <div className="px-2 pb-8 pt-2 flex flex-col md:flex-row gap-6">
+              <div className="flex-1">
+                <p className="font-body text-base leading-relaxed text-ink-primary max-w-lg">
+                  {project.description}
+                </p>
+                <p className="mt-4 font-mono text-sm text-ink-muted">
+                  {project.stack.join(", ")}
+                </p>
+                {project.previewAvailable && project.url && (
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-4 font-mono text-sm text-accent hover:text-accent-dark hover:underline transition-colors duration-base ease-editorial"
+                  >
+                    View Project →
+                  </a>
+                )}
+              </div>
+              {project.screenshot && (
+                <div className="md:w-[280px] shrink-0">
+                  <img
+                    src={project.screenshot}
+                    alt={`${project.title} screenshot`}
+                    className="w-full shadow-md grayscale hover:grayscale-0 transition-all duration-slow ease-editorial"
+                  />
+                </div>
               )}
             </div>
           </motion.div>
