@@ -189,7 +189,7 @@ function LeftNav() {
   );
 }
 
-/* ── Mobile Nav ───────────────────────────────────────────────── */
+/* ── Mobile Nav (Sheet) ───────────────────────────────────────── */
 
 function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -202,60 +202,37 @@ function MobileNav() {
   }, []);
 
   return (
-    <div className="lg:hidden fixed top-0 right-0 z-50">
-      {/* Hamburger button */}
+    <div className="lg:hidden">
+      {/* Hamburger trigger */}
       <button
-        onClick={() => setIsOpen((o) => !o)}
+        onClick={() => setIsOpen(true)}
         className="fixed top-6 right-6 z-[60] flex flex-col justify-center items-center w-10 h-10"
-        aria-label="Toggle menu"
+        aria-label="Open menu"
       >
-        <span
-          className="block w-6 h-px bg-ink-primary transition-all duration-base ease-editorial"
-          style={{
-            transform: isOpen ? "rotate(45deg) translateY(0.5px)" : "translateY(-3px)",
-          }}
-        />
-        <span
-          className="block w-6 h-px bg-ink-primary transition-all duration-base ease-editorial"
-          style={{
-            opacity: isOpen ? 0 : 1,
-          }}
-        />
-        <span
-          className="block w-6 h-px bg-ink-primary transition-all duration-base ease-editorial"
-          style={{
-            transform: isOpen ? "rotate(-45deg) translateY(-0.5px)" : "translateY(3px)",
-          }}
-        />
+        <span className="block w-6 h-px bg-ink-primary mb-1.5" />
+        <span className="block w-6 h-px bg-ink-primary mb-1.5" />
+        <span className="block w-6 h-px bg-ink-primary" />
       </button>
 
-      {/* Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: EASE }}
-            className="fixed inset-0 z-[55] bg-background"
-          >
-            <div className="flex flex-col items-start justify-center h-full px-8">
-              {NAV_LINKS.map((link, i) => (
-                <motion.button
-                  key={link}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: i * 0.08, ease: EASE }}
-                  onClick={() => scrollTo(link)}
-                  className="font-mono text-sm uppercase tracking-[0.2em] text-ink-primary py-3"
-                >
-                  ~/{link}
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetContent side="right" className="bg-background border-l border-ink-faint w-[280px] p-0">
+          <SheetTitle className="sr-only">Navigation</SheetTitle>
+          <div className="flex flex-col justify-center h-full px-8">
+            {NAV_LINKS.map((link, i) => (
+              <motion.button
+                key={link}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: i * 0.08, ease: EASE }}
+                onClick={() => scrollTo(link)}
+                className="font-mono text-sm uppercase tracking-[0.2em] text-ink-primary py-4 text-left hover:text-accent transition-colors duration-base ease-editorial"
+              >
+                ~/{link}
+              </motion.button>
+            ))}
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
