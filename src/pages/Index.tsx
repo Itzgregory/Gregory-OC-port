@@ -12,6 +12,12 @@ import { InfiniteMovingCards } from "@/components/InfiniteMovingCards";
 import { ScrollReveal, StaggerReveal } from "@/components/ScrollReveal";
 import { HoverBorderGradient } from "@/components/HoverBorderGradient";
 import { useCharacterScramble } from "@/hooks/useCharacterScramble";
+import { WorkSection } from "@/components/WorkLayouts";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 /* ── Data ─────────────────────────────────────────────────────── */
 
@@ -126,98 +132,7 @@ function SectionLabel({ text }: { text: string }) {
   );
 }
 
-/* ── Work Row ─────────────────────────────────────────────────── */
-
-function WorkRow({ project }: { project: Project }) {
-  const [open, setOpen] = useState(false);
-  const [rowHovered, setRowHovered] = useState(false);
-  const yearRef = useRef<HTMLSpanElement>(null);
-  const scramble = useCharacterScramble();
-
-  const handleMouseEnter = useCallback(() => {
-    setRowHovered(true);
-    if (yearRef.current) {
-      scramble(yearRef.current, project.year, 0.5);
-    }
-  }, [project.year, scramble]);
-
-  const handleMouseLeave = useCallback(() => {
-    setRowHovered(false);
-  }, []);
-
-  return (
-    <div className="border-t border-ink-faint">
-      <button
-        onClick={() => setOpen((o) => !o)}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        data-cursor-text="open"
-        className="group w-full flex items-center gap-4 py-5 px-2 text-left transition-colors duration-base ease-editorial hover:bg-background-hover"
-      >
-        <span
-          ref={yearRef}
-          className="w-16 shrink-0 font-mono text-sm text-ink-muted"
-        >
-          {project.year}
-        </span>
-        <span className="flex-1 relative">
-          <span
-            className="font-display text-ink-primary"
-            style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)", lineHeight: 1.3 }}
-          >
-            {project.title}
-          </span>
-          <span className="absolute bottom-0 left-0 w-full h-px bg-ink-primary origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-slow ease-editorial" />
-        </span>
-        <HoverBorderGradient isHovered={rowHovered}>
-          {project.category}
-        </HoverBorderGradient>
-      </button>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.5, ease: EASE }}
-            className="overflow-hidden"
-          >
-            <div className="px-2 pb-8 pt-2 flex flex-col md:flex-row gap-6">
-              <div className="flex-1">
-                <p className="font-body text-base leading-relaxed text-ink-primary max-w-lg">
-                  {project.description}
-                </p>
-                <p className="mt-4 font-mono text-sm text-ink-muted">
-                  {project.stack.join(", ")}
-                </p>
-                {project.previewAvailable && project.url && (
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block mt-4 font-mono text-sm text-accent hover:text-accent-dark hover:underline transition-colors duration-base ease-editorial"
-                  >
-                    View Project →
-                  </a>
-                )}
-              </div>
-              {project.screenshot && (
-                <div className="md:w-[280px] shrink-0">
-                  <img
-                    src={project.screenshot}
-                    alt={`${project.title} screenshot`}
-                    className="w-full shadow-md grayscale hover:grayscale-0 transition-all duration-slow ease-editorial"
-                  />
-                </div>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
+/* ── Work Row removed — now in WorkLayouts.tsx ──────────────── */
 
 /* ── Left Nav ─────────────────────────────────────────────────── */
 
@@ -274,7 +189,7 @@ function LeftNav() {
   );
 }
 
-/* ── Mobile Nav ───────────────────────────────────────────────── */
+/* ── Mobile Nav (Sheet) ───────────────────────────────────────── */
 
 function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -287,60 +202,37 @@ function MobileNav() {
   }, []);
 
   return (
-    <div className="lg:hidden fixed top-0 right-0 z-50">
-      {/* Hamburger button */}
+    <div className="lg:hidden">
+      {/* Hamburger trigger */}
       <button
-        onClick={() => setIsOpen((o) => !o)}
+        onClick={() => setIsOpen(true)}
         className="fixed top-6 right-6 z-[60] flex flex-col justify-center items-center w-10 h-10"
-        aria-label="Toggle menu"
+        aria-label="Open menu"
       >
-        <span
-          className="block w-6 h-px bg-ink-primary transition-all duration-base ease-editorial"
-          style={{
-            transform: isOpen ? "rotate(45deg) translateY(0.5px)" : "translateY(-3px)",
-          }}
-        />
-        <span
-          className="block w-6 h-px bg-ink-primary transition-all duration-base ease-editorial"
-          style={{
-            opacity: isOpen ? 0 : 1,
-          }}
-        />
-        <span
-          className="block w-6 h-px bg-ink-primary transition-all duration-base ease-editorial"
-          style={{
-            transform: isOpen ? "rotate(-45deg) translateY(-0.5px)" : "translateY(3px)",
-          }}
-        />
+        <span className="block w-6 h-px bg-ink-primary mb-1.5" />
+        <span className="block w-6 h-px bg-ink-primary mb-1.5" />
+        <span className="block w-6 h-px bg-ink-primary" />
       </button>
 
-      {/* Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: EASE }}
-            className="fixed inset-0 z-[55] bg-background"
-          >
-            <div className="flex flex-col items-start justify-center h-full px-8">
-              {NAV_LINKS.map((link, i) => (
-                <motion.button
-                  key={link}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: i * 0.08, ease: EASE }}
-                  onClick={() => scrollTo(link)}
-                  className="font-mono text-sm uppercase tracking-[0.2em] text-ink-primary py-3"
-                >
-                  ~/{link}
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetContent side="right" className="bg-background border-l border-ink-faint w-[280px] p-0">
+          <SheetTitle className="sr-only">Navigation</SheetTitle>
+          <div className="flex flex-col justify-center h-full px-8">
+            {NAV_LINKS.map((link, i) => (
+              <motion.button
+                key={link}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: i * 0.08, ease: EASE }}
+                onClick={() => scrollTo(link)}
+                className="font-mono text-sm uppercase tracking-[0.2em] text-ink-primary py-4 text-left hover:text-accent transition-colors duration-base ease-editorial"
+              >
+                ~/{link}
+              </motion.button>
+            ))}
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
@@ -497,21 +389,7 @@ function AboutSection() {
   );
 }
 
-/* ── Work Section ─────────────────────────────────────────────── */
-
-function WorkSection() {
-  return (
-    <section id="work" className="relative border-t border-ink-faint pt-20 pb-24">
-      <SectionLabel text="work" />
-      <div>
-        {PROJECTS.map((p) => (
-          <WorkRow key={p.title} project={p} />
-        ))}
-        <div className="border-t border-ink-faint" />
-      </div>
-    </section>
-  );
-}
+/* ── Work Section now imported from WorkLayouts.tsx ──────────── */
 
 /* ── Stack Section ────────────────────────────────────────────── */
 
@@ -684,7 +562,7 @@ export default function Index() {
       <main className="mx-auto max-w-[820px] px-8">
         <HeroSection />
         <AboutSection />
-        <WorkSection />
+        <WorkSection projects={PROJECTS} />
         <StackSection />
       </main>
 
