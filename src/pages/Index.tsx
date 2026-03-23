@@ -23,6 +23,8 @@ const PROJECTS: Project[] = [
     description:
       "Nigerian identity verification platform built with React, TypeScript and Vite. Designed for speed, clarity, and trust — the kind of product where every millisecond of perceived performance matters.",
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS"],
+    previewAvailable: true,
+    url: "https://idmenaija.com",
   },
   {
     year: "2025",
@@ -31,6 +33,8 @@ const PROJECTS: Project[] = [
     description:
       "Corporate law firm website with an editorial layout and TanStack Router. Typography-first design language that lets the content breathe while maintaining the gravitas the profession demands.",
     stack: ["React", "TypeScript", "Vite", "TanStack Router", "Tailwind CSS"],
+    previewAvailable: true,
+    url: "https://adedejiandco.com",
   },
   {
     year: "2024",
@@ -39,6 +43,8 @@ const PROJECTS: Project[] = [
     description:
       "Multi-service agency site with Framer Motion animations and a custom design system. Every interaction was choreographed — nothing moves without reason.",
     stack: ["React", "TypeScript", "TanStack Router", "Framer Motion", "Radix UI"],
+    previewAvailable: true,
+    url: "https://everfresh.com.ng",
   },
   {
     year: "2024",
@@ -47,6 +53,8 @@ const PROJECTS: Project[] = [
     description:
       "Fintech expense tracker targeting Nigerian users, built with .NET 9 and DDD architecture. Clean separation of concerns on the backend, React on the front.",
     stack: [".NET 9", "C#", "CQRS", "React"],
+    previewAvailable: true,
+    url: "https://hustletrack.app",
   },
 ];
 
