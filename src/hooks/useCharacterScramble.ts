@@ -9,28 +9,44 @@ export function useCharacterScramble() {
   const scramble = useCallback((el: HTMLElement, finalText: string, duration = 0.5) => {
     if (intervalRef.current) clearInterval(intervalRef.current);
 
-    let iteration = 0;
-    const totalIterations = Math.ceil(duration * 30); // ~30fps
+    const originalText = el.textContent || "";
+    const textLength = finalText.length;
+    let currentIndex = 0;
+    
+    // Calculate time per character
+    const timePerChar = (duration * 1000) / textLength;
 
     intervalRef.current = setInterval(() => {
-      const progress = iteration / totalIterations;
-      const revealed = Math.floor(progress * finalText.length);
-
-      el.textContent = finalText
-        .split("")
-        .map((char, i) => {
-          if (i < revealed) return finalText[i];
-          if (char === " " || char === "@" || char === ".") return char;
-          return CHARS[Math.floor(Math.random() * CHARS.length)];
-        })
-        .join("");
-
-      iteration++;
-      if (iteration > totalIterations) {
-        el.textContent = finalText;
+      if (currentIndex < textLength) {
+        currentIndex++;
+        
+        // Build the text
+        const revealedText = finalText.slice(0, currentIndex);
+        const remainingLength = textLength - currentIndex;
+        
+        let scrambledText = "";
+        for (let i = 0; i < remainingLength; i++) {
+          const char = finalText[currentIndex + i];
+          if (char === " " || char === "@" || char === "." || char === "/") {
+            scrambledText += char;
+          } else {
+            scrambledText += CHARS[Math.floor(Math.random() * CHARS.length)];
+          }
+        }
+        
+        el.textContent = revealedText + scrambledText;
+        
+        // Add a subtle scale effect
+        gsap.to(el, {
+          scale: 1.02,
+          duration: 0.05,
+          yoyo: true,
+          repeat: 1,
+        });
+      } else {
         if (intervalRef.current) clearInterval(intervalRef.current);
       }
-    }, 1000 / 30);
+    }, timePerChar);
   }, []);
 
   return scramble;
