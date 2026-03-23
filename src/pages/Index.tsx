@@ -60,6 +60,7 @@ const PROJECTS: Project[] = [
     stack: ["React", "TypeScript", "TanStack Router", "Framer Motion", "Radix UI"],
     previewAvailable: true,
     url: "https://everfresh.com.ng",
+    screenshot: projectEverfresh,
   },
   {
     year: "2024",
