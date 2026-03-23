@@ -608,6 +608,7 @@ export default function Index() {
     <>
       <CustomCursor />
       <LeftNav />
+      <MobileNav />
 
       <main className="mx-auto max-w-[820px] px-8">
         <HeroSection />
