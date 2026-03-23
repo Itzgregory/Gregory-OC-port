@@ -25,6 +25,7 @@ interface Project {
   stack: string[];
   previewAvailable: boolean;
   url?: string;
+  screenshot?: string;
 }
 
 const PROJECTS: Project[] = [
