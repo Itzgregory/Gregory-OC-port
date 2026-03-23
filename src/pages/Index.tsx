@@ -389,21 +389,7 @@ function AboutSection() {
   );
 }
 
-/* ── Work Section ─────────────────────────────────────────────── */
-
-function WorkSection() {
-  return (
-    <section id="work" className="relative border-t border-ink-faint pt-20 pb-24">
-      <SectionLabel text="work" />
-      <div>
-        {PROJECTS.map((p) => (
-          <WorkRow key={p.title} project={p} />
-        ))}
-        <div className="border-t border-ink-faint" />
-      </div>
-    </section>
-  );
-}
+/* ── Work Section now imported from WorkLayouts.tsx ──────────── */
 
 /* ── Stack Section ────────────────────────────────────────────── */
 
