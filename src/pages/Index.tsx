@@ -3,6 +3,10 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import gsap from "gsap";
 import Lenis from "lenis";
 import portrait from "@/assets/portrait.jpg";
+import projectIdmenaija from "@/assets/project-idmenaija.jpg";
+import projectAdedeji from "@/assets/project-adedeji.jpg";
+import projectEverfresh from "@/assets/project-everfresh.jpg";
+import projectHustletrack from "@/assets/project-hustletrack.jpg";
 import { CustomCursor } from "@/components/CustomCursor";
 import { InfiniteMovingCards } from "@/components/InfiniteMovingCards";
 import { ScrollReveal, StaggerReveal } from "@/components/ScrollReveal";
@@ -21,6 +25,7 @@ interface Project {
   stack: string[];
   previewAvailable: boolean;
   url?: string;
+  screenshot?: string;
 }
 
 const PROJECTS: Project[] = [
@@ -33,6 +38,7 @@ const PROJECTS: Project[] = [
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS"],
     previewAvailable: true,
     url: "https://idmenaija.com",
+    screenshot: projectIdmenaija,
   },
   {
     year: "2025",
@@ -43,6 +49,7 @@ const PROJECTS: Project[] = [
     stack: ["React", "TypeScript", "Vite", "TanStack Router", "Tailwind CSS"],
     previewAvailable: true,
     url: "https://adedejiandco.com",
+    screenshot: projectAdedeji,
   },
   {
     year: "2024",
@@ -53,6 +60,7 @@ const PROJECTS: Project[] = [
     stack: ["React", "TypeScript", "TanStack Router", "Framer Motion", "Radix UI"],
     previewAvailable: true,
     url: "https://everfresh.com.ng",
+    screenshot: projectEverfresh,
   },
   {
     year: "2024",
@@ -63,6 +71,7 @@ const PROJECTS: Project[] = [
     stack: [".NET 9", "C#", "CQRS", "React"],
     previewAvailable: true,
     url: "https://hustletrack.app",
+    screenshot: projectHustletrack,
   },
 ];
 
@@ -174,22 +183,33 @@ function WorkRow({ project }: { project: Project }) {
             transition={{ duration: 0.5, ease: EASE }}
             className="overflow-hidden"
           >
-            <div className="px-2 pb-8 pt-2">
-              <p className="font-body text-base leading-relaxed text-ink-primary max-w-lg">
-                {project.description}
-              </p>
-              <p className="mt-4 font-mono text-sm text-ink-muted">
-                {project.stack.join(", ")}
-              </p>
-              {project.previewAvailable && project.url && (
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block mt-4 font-mono text-sm text-accent hover:text-accent-dark hover:underline transition-colors duration-base ease-editorial"
-                >
-                  View Project →
-                </a>
+            <div className="px-2 pb-8 pt-2 flex flex-col md:flex-row gap-6">
+              <div className="flex-1">
+                <p className="font-body text-base leading-relaxed text-ink-primary max-w-lg">
+                  {project.description}
+                </p>
+                <p className="mt-4 font-mono text-sm text-ink-muted">
+                  {project.stack.join(", ")}
+                </p>
+                {project.previewAvailable && project.url && (
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-4 font-mono text-sm text-accent hover:text-accent-dark hover:underline transition-colors duration-base ease-editorial"
+                  >
+                    View Project →
+                  </a>
+                )}
+              </div>
+              {project.screenshot && (
+                <div className="md:w-[280px] shrink-0">
+                  <img
+                    src={project.screenshot}
+                    alt={`${project.title} screenshot`}
+                    className="w-full shadow-md grayscale hover:grayscale-0 transition-all duration-slow ease-editorial"
+                  />
+                </div>
               )}
             </div>
           </motion.div>
@@ -254,7 +274,78 @@ function LeftNav() {
   );
 }
 
-/* ── Hero Section ─────────────────────────────────────────────── */
+/* ── Mobile Nav ───────────────────────────────────────────────── */
+
+function MobileNav() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const scrollTo = useCallback((id: string) => {
+    setIsOpen(false);
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
+  }, []);
+
+  return (
+    <div className="lg:hidden fixed top-0 right-0 z-50">
+      {/* Hamburger button */}
+      <button
+        onClick={() => setIsOpen((o) => !o)}
+        className="fixed top-6 right-6 z-[60] flex flex-col justify-center items-center w-10 h-10"
+        aria-label="Toggle menu"
+      >
+        <span
+          className="block w-6 h-px bg-ink-primary transition-all duration-base ease-editorial"
+          style={{
+            transform: isOpen ? "rotate(45deg) translateY(0.5px)" : "translateY(-3px)",
+          }}
+        />
+        <span
+          className="block w-6 h-px bg-ink-primary transition-all duration-base ease-editorial"
+          style={{
+            opacity: isOpen ? 0 : 1,
+          }}
+        />
+        <span
+          className="block w-6 h-px bg-ink-primary transition-all duration-base ease-editorial"
+          style={{
+            transform: isOpen ? "rotate(-45deg) translateY(-0.5px)" : "translateY(3px)",
+          }}
+        />
+      </button>
+
+      {/* Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: EASE }}
+            className="fixed inset-0 z-[55] bg-background"
+          >
+            <div className="flex flex-col items-start justify-center h-full px-8">
+              {NAV_LINKS.map((link, i) => (
+                <motion.button
+                  key={link}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.08, ease: EASE }}
+                  onClick={() => scrollTo(link)}
+                  className="font-mono text-sm uppercase tracking-[0.2em] text-ink-primary py-3"
+                >
+                  ~/{link}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+
 
 function HeroSection() {
   const nameRef = useRef<HTMLHeadingElement>(null);
@@ -588,6 +679,7 @@ export default function Index() {
     <>
       <CustomCursor />
       <LeftNav />
+      <MobileNav />
 
       <main className="mx-auto max-w-[820px] px-8">
         <HeroSection />
