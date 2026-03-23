@@ -38,6 +38,7 @@ const PROJECTS: Project[] = [
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS"],
     previewAvailable: true,
     url: "https://idmenaija.com",
+    screenshot: projectIdmenaija,
   },
   {
     year: "2025",
