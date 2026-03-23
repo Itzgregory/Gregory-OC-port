@@ -71,6 +71,7 @@ const PROJECTS: Project[] = [
     stack: [".NET 9", "C#", "CQRS", "React"],
     previewAvailable: true,
     url: "https://hustletrack.app",
+    screenshot: projectHustletrack,
   },
 ];
 
