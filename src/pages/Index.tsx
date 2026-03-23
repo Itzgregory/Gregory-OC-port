@@ -11,6 +11,8 @@ interface Project {
   category: string;
   description: string;
   stack: string[];
+  previewAvailable: boolean;
+  url?: string;
 }
 
 const PROJECTS: Project[] = [
